@@ -8,6 +8,9 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
+import { AttachmentForm } from "./_components/attachment-form";
+import { ChaptersForm } from "./_components/chapters-form";
+
 
 
 async function CourseIdPage({params}: {
@@ -22,6 +25,18 @@ async function CourseIdPage({params}: {
         where: {
             id: params.courseId,
             userId
+        },
+        include: {
+            chapters: {
+                orderBy : {
+                    position: "asc"
+                }
+            },
+            attachments: {
+                orderBy: {
+                    createdAt: "desc"
+                }
+            }
         }
     });
 
@@ -42,7 +57,8 @@ async function CourseIdPage({params}: {
         course.description,
         course.imageUrl,
         course.price,
-        course.categoryId
+        course.categoryId,
+        course.chapters.some(chapter => chapter.isPublished)
     ];
 
     const totalFields = requiredFields.length;
@@ -98,9 +114,10 @@ async function CourseIdPage({params}: {
                             Course chapters
                         </h2>
                     </div>
-                    <div>
-                        TODO: Chapters
-                    </div>
+                    <ChaptersForm
+                        initialData={course}
+                        courseId={course.id}
+                    />
                 </div>
                 <div>
                 <div className="flex items-center gap-x-2">
@@ -117,7 +134,7 @@ async function CourseIdPage({params}: {
                     <IconBadge icon={File}/>
                     <h2 className="text-xl">Resources & Attachments</h2>
                 </div>
-                <ImageForm
+                <AttachmentForm
                 initialData={course}
                 courseId={course.id}
                 />
