@@ -2,11 +2,14 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import { IconBadge } from "@/components/shared/icon-badge";
 import { ChapterTitleForm } from "./_components/chapter-title-form";
 import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
+import { ChapterVideoForm } from "./_components/chapter-video-form";
+import { Banner } from "@/components/shared/banner";
+import { ChapterActions } from "./_components/chapter-actions";
 
 
 async function ChapterIdPage({params}: {
@@ -41,8 +44,17 @@ async function ChapterIdPage({params}: {
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
     const completionText = `(${completedFields}/${totalFields})`;
+
+    const isComplete = requiredFields.every(Boolean);
   return (
-    <div className="p-6">
+        <>
+        {!chapter.isPublished && (
+            <Banner
+            variant="warning"
+            label="This chapter is unpublished. It will not be visible in the course"
+            />
+        )}
+         <div className="p-6">
         <div className="flex items-center justify-between">
             <div className="w-full">
                 <Link href={`/teacher/courses/${params.courseId}`}
@@ -60,6 +72,12 @@ async function ChapterIdPage({params}: {
                             Complete all fields {completionText}
                         </span>
                     </div>
+                    <ChapterActions
+                    disabled={!isComplete}
+                    courseId={params.courseId}
+                    chapterId={params.chapterId}
+                    isPublished={chapter.isPublished}
+                    />
                 </div>
             </div>
         </div>
@@ -99,8 +117,22 @@ async function ChapterIdPage({params}: {
                     />
                 </div>
             </div>
+            <div>
+                <div className="flex items-center gap-x-2">
+                    <IconBadge icon={Video}/>
+                    <h2 className="text-xl">
+                        Add a video
+                    </h2>
+                </div>
+                <ChapterVideoForm
+                initialData={chapter}
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+                />
+            </div>
         </div>
     </div>
+        </>
   )
 }
 

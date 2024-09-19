@@ -12,7 +12,6 @@ import {
     FormDescription,
     FormField,
     FormItem,
-    FormMessage
 } from "@/components/ui/form";
 
 import { Button } from "@/components/ui/button";
@@ -21,10 +20,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
-import { Chapter, Course } from "@prisma/client";
-import { Editor } from "@/components/shared/editor";
-import { Preview } from "@/components/shared/preview";
+import { Chapter} from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface ChapterAccessFormProps {
