@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconType } from "react-icons";
 import qs from "query-string";
 
 
@@ -10,7 +9,7 @@ import qs from "query-string";
 interface CategoryItemProps {
     label: string;
     value?:string;
-    icon?: any
+    icon?: React.ReactNode
 }
 
 function CategoryItem({

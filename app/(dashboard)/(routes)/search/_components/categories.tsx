@@ -18,7 +18,7 @@ interface CategoriesProps {
 }
 
 
-const iconMap: Record<Category["name"], any> = {
+const iconMap: Record<Category["name"], React.ReactNode> = {
     "Music" : <FcMusic/>,
     "Photography": <FcOldTimeCamera/>,
     "Fitness": <FcSportsMode/>,
